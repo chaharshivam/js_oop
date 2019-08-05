@@ -1,33 +1,34 @@
-console.log(this.document === document); // Output
+console.log(this.document === document); // Output true
 
-console.log(this === window); //Output
+console.log(this === window); //Output true
 
 var myFunction = function() {
   console.log(this);
 };
-myFunction(); // Output
+myFunction(); // Output Window object
 
 function f1() {
   "use strict";
   return this;
 }
-console.log(f1() === window); //Output
+
+console.log(f1() === window); //Output false
 
 function foo() {
   console.log("Simple function call");
   console.log(this === window);
 }
 
-foo(); //Output ??
-console.log(this === window)(
-  // Output
+foo(); //Output true
+console.log(this === window); // Output true
 
+(
   // This for IIFE
   function() {
     console.log("Anonymous function invocation");
     console.log(this === window);
   }
-)(); //Output
+)(); //Output true
 
 // This for IIFE in strict mode
 function foo() {
@@ -36,13 +37,13 @@ function foo() {
   console.log(this === window);
 }
 
-foo(); // Output
+foo(); // Output false
 
 var myObject = {};
 myObject.someMethod = function() {
   console.log(this);
 };
-myObject.someMethod(); //Value Of This
+myObject.someMethod(); //Value Of This = {someMethod}
 
 // This refers to the New Instance
 
@@ -56,9 +57,9 @@ function Person(fn, ln) {
 }
 
 let person = new Person("John", "Reed");
-person.displayName(); // Output
+person.displayName(); // Output: John Reed
 let person2 = new Person("Paul", "Adams");
-person2.displayName(); // Output
+person2.displayName(); // Output: Paul Adams
 
 //This refers to the invoker Object
 function foo() {
@@ -75,10 +76,10 @@ let user = {
   }
 };
 
-user.foo(); // Output
+user.foo(); // Output false
 let fun1 = user.foo1;
-fun1(); // Output ??
-user.foo1(); // Output ??
+fun1(); // Output ?? true
+user.foo1(); // Output ?? false
 
 //this will call apply and bind
 
@@ -90,13 +91,13 @@ var module = {
   }
 };
 
-module.getX(); // Output ??
+module.getX(); // Output ?? 81
 
 var retrieveX = module.getX;
-retrieveX(); //Output ??
+retrieveX(); //Output ?? 9
 
 var boundGetX = retrieveX.bind(module);
-boundGetX(); // Output ??
+boundGetX(); // Output ?? 81
 
 // Call with new constructor
 
@@ -110,11 +111,11 @@ function Person(fn, ln) {
 }
 
 let person = new Person("John", "Reed");
-person.displayName(); // Output
+person.displayName(); // Output John Reed
 let person2 = new Person("Paul", "Adams");
-person2.displayName(); // Output
+person2.displayName(); // Output Paul Adams
 
-person.displayName.call(person2); // Output ??
+person.displayName.call(person2); // Output ?? Paul Adams
 
 // Guess the output of the following
 
@@ -130,26 +131,26 @@ const obj = {
 obj.getThis3 = obj.getThis.bind(obj);
 obj.getThis4 = obj.getThis2.bind(obj);
 
-// Output
+// Output - Window because arrow functions don't bind 'this'
 obj.getThis();
 
-// Output
+// Output - Window
 obj.getThis.call(a);
 
-// Output
+// Output - {obj}
 obj.getThis2();
 
-// Output
+// Output - {a}
 obj.getThis2.call(a);
 
-// Output
+// Output - Window
 obj.getThis3();
 
-// Output
+// Output - Window
 obj.getThis3.call(a);
 
-// Output
+// Output - obj
 obj.getThis4();
 
-// Output
+// Output - obj because already bound to obj
 obj.getThis4.call(a);
