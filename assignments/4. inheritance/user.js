@@ -1,4 +1,4 @@
-// Factory method
+// Factory method - We create methods inside every object, which takes more memory
 
 function createUser (name, score) {
 	let obj = {
@@ -76,7 +76,7 @@ function createPaidUser (name, score, balance) {
 
 let yash = createPaidUser('Yash', 20, 30);
 
-// Pseudoclassical
+// Pseudoclassical - We reference the user methods which saves us space
 function createUser (name, score) {
 	this.name = name;
 	this.score = score;
@@ -110,7 +110,7 @@ Object.setPrototypeOf(createPaidUser.prototype, createUser.prototype);
 
 let tejas = new createPaidUser('Tejas', 50, 100);
 
-// Class
+// Class - is syntactic sugar for psudoclassical appraoch
 
 class User {
 	constructor (name, score) {
@@ -129,6 +129,7 @@ class User {
 
 class PaidUser extends User {
 	constructor (name, score, balance) {
+		// calls the constructor of User with its own 'this'
 		super (name, score);
 		this.balance = balance;
 	}
